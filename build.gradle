@@ -1,0 +1,13 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'application'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.google.android.tools:ddmlib:r10'
+}
+
+mainClassName = 'cz.ladicek.android.ddmlib.Demo'
