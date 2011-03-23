@@ -29,6 +29,8 @@ public class Demo {
 
         if (!adb.isConnected()) {
             System.out.println("Couldn't connect to ADB server");
+        } else if (!adb.hasInitialDeviceList()) {
+            System.out.println("Couldn't list connected devices");
         } else {
             for (IDevice device : adb.getDevices()) {
                 System.out.println("- " + device.getSerialNumber());
