@@ -18,26 +18,41 @@ public class Demo {
     public void usingWaitLoop() throws Exception {
         AndroidDebugBridge adb = AndroidDebugBridge.createBridge();
 
-        int trials = 10;
-        while (trials > 0) {
-            Thread.sleep(50);
-            if (adb.isConnected()) {
-                break;
+        try {
+            int trials = 10;
+            while (trials > 0) {
+                Thread.sleep(50);
+                if (adb.isConnected()) {
+                    break;
+                }
+                trials--;
             }
-            trials--;
-        }
 
-        if (!adb.isConnected()) {
-            System.out.println("Couldn't connect to ADB server");
-        } else if (!adb.hasInitialDeviceList()) {
-            System.out.println("Couldn't list connected devices");
-        } else {
+            if (!adb.isConnected()) {
+                System.out.println("Couldn't connect to ADB server");
+                return;
+            }
+
+            trials = 10;
+            while (trials > 0) {
+                Thread.sleep(50);
+                if (adb.hasInitialDeviceList()) {
+                    break;
+                }
+                trials--;
+            }
+
+            if (!adb.hasInitialDeviceList()) {
+                System.out.println("Couldn't list connected devices");
+                return;
+            }
+
             for (IDevice device : adb.getDevices()) {
                 System.out.println("- " + device.getSerialNumber());
             }
+        } finally {
+            AndroidDebugBridge.disconnectBridge();
         }
-
-        AndroidDebugBridge.disconnectBridge();
     }
 
     public void usingDeviceChangeListener() throws Exception {
